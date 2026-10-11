@@ -1,0 +1,27 @@
+# OS / editor / tooling
+.DS_Store
+.claude/
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Data (keep only the README describing it)
+data/*
+!data/README.md
+data2/
+
+# Checkpoints and model weights
+checkpoints/
+notebooks/checkpoints/
+*.pt
+*.pth
+*.ckpt
+
+# Generated outputs (figures, tables, papers)
+figures/
+*.pdf
+
+# Superseded code
+old_files/

@@ -1,0 +1,53 @@
+# Data
+symbol: BTCUSDT                 # Trading pair symbol to fetch order book data for
+price_level: 1                  # Number of price levels to aggregate queue sizes over
+level: 5                        # Number of bid/ask levels to include in the feature vector
+time_diff: 5000                 # Time gap between consecutive snapshots in ms (5000=5s, 60000=1m)
+depth: 100                      # Order book depth to sample from (top N levels)
+
+# Model
+beta_start: 0.0001              # Starting value of the noise variance schedule
+beta_end: 0.1                   # Ending value of the noise variance schedule
+schedule: "linear"              # Noise schedule type: "linear", "quad", "const", "jsd", "sigmoid", "cosine"
+context_length: 1               # Number of past time steps fed as context to the encoder
+prediction_length: 1            # Number of future time steps the model predicts per forward pass
+hidden_encoder_dim: 32          # Hidden dimension of the RNN encoder
+hidden_noise_dim: 64            # Hidden dimension of the noise prediction network
+num_encoder_layers: 2           # Number of stacked RNN layers in the encoder
+emb_dim: 32                     # Embedding dimension for the diffusion step embedding
+k: 80                           # Total number of diffusion steps in the forward/reverse process
+conditioning_length: 32         # Dimension of the conditioning vector passed to the noise predictor
+loss_type: "l2"                 # Loss function for training: "l1", "l2", or "huber"
+dropout_rate: 0.0               # Dropout probability applied in the encoder (0.0 = no dropout)
+scaling: true                   # Whether to normalize inputs by their mean absolute value per context
+cell_type: "LSTM"               # RNN cell type for the encoder: "GRU" or "LSTM"
+noise_predictor_type: "wavenet"     # Noise predictor architecture: "mlp" or "wavenet"
+residual_layers: 8              # (wavenet only) Number of dilated residual blocks
+residual_channels: 8            # (wavenet only) Channels per residual block
+dilation_cycle_length: 2        # (wavenet only) Dilation doubles every block, resets after this many
+
+# Reproducibility
+seed: 42                        # Random seed for reproducible training and sampling
+
+# Training
+batch_size: 64                  # Number of samples per training batch
+learning_rate: 0.0015           # Optimizer learning rate (Adam)
+num_epochs: 30                  # Total number of training epochs
+max_batches: 100                # Max batches per epoch; null = use all available batches
+max_grad_norm: null             # Max gradient norm for clipping; null = no clipping
+
+# Prediction
+prediction_steps: 100           # Number of autoregressive rollout steps at inference time
+num_generated_paths: 1000       # Number of stochastic sample paths to generate per prediction
+start_index: 100                # Index in the test set where prediction begins (must be >= context_length)
+
+# Dates (YYYY-MM-DD)
+train:
+  start: "2023-10-01"           # Training data start date
+  end: "2023-10-15"             # Training data end date
+val:
+  start: "2023-10-16"           # Validation data start date
+  end: "2023-10-17"             # Validation data end date
+test:
+  start: "2023-10-18"           # Test data start date
+  end: "2023-10-19"             # Test data end date
