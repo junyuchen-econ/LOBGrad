@@ -22,6 +22,7 @@ notebooks/checkpoints/
 # Generated outputs (figures, tables, papers)
 figures/
 *.pdf
+!ICML_version.pdf
 
 # Superseded code
 old_files/
